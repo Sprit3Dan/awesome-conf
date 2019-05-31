@@ -15,8 +15,9 @@ local naughty = require("naughty")
 
 local menubar = require("menubar")
 local volume_control = require("volume-control")
-local brightness_widget = require("brightness")
 local hotkeys_popup = require("awful.hotkeys_popup")
+
+local brightness = require("widgets/brightness")
 
 -- Notifications beautyfication
 naughty.config.defaults['max_width'] = 500
@@ -86,10 +87,6 @@ volumecfg = volume_control({
 })
 
 -- backlight 
-local brightness = require("brightness")
-brightness_ctrl = brightness({
-    timeout = 1
-})
 
 
 -- Table of layouts to cover with awful.layout.inc, order matters.
@@ -129,22 +126,6 @@ mymainmenu = awful.menu({
         { "cfg", editor_cmd .. " " .. awesome.conffile },
     }
 })
-
--- myawesomemenu = {
--- --    { "hotkeys", function() hotkeys_popup.show_help(nil, awful.screen.focused()) end },
--- --    { "manual", terminal .. " -e man awesome" },
--- --    { "edit config", editor_cmd .. " " .. awesome.conffile },
--- --    { "restart", awesome.restart },
---       { "sleep", terminal .. " systemctl sleep" },
--- --    { "quit", function() awesome.quit() end },
--- }
-
--- Menubar configuration
--- Menubar configuration
-
--- Menubar configuration
-menubar.utils.terminal = terminal -- Set the terminal for applications that require it
--- }}}
 
 -- Keyboard map indicator and switcher
 mykeyboardlayout = awful.widget.keyboardlayout()
@@ -242,6 +223,7 @@ awful.screen.connect_for_each_screen(function(s)
     -- Create the wibox
     s.mywibox = awful.wibar({ position = "left", screen = s })
 
+    local a = 0
     -- Add widgets to the wibox
     s.mywibox:setup {
         layout = wibox.layout.align.vertical,
@@ -261,10 +243,10 @@ awful.screen.connect_for_each_screen(function(s)
                 -- stray,
                 -- wibox.layout.margin(wibox.widget.systray(), 0, 0, 5, 5),
                 mytextclock,
-                brightness_ctrl.widget,
+                brightness({}).widget,
                 battery_widget,
                 mykeyboardlayout,
-            }
+            },
         }
     }
 end)

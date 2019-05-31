@@ -11,7 +11,7 @@ local themes_path = gfs.get_themes_dir()
 
 local theme = {}
 
-theme.font          = "droid sans mono 9"
+theme.font          = "adobe-saucecodepro mono 12"
 
 theme.bg_normal     = "#222222"
 theme.bg_focus      = "#535d6c"
@@ -29,6 +29,13 @@ theme.border_width  = dpi(3)
 theme.border_normal = "#000000"
 theme.border_focus  = "#535d6c"
 theme.border_marked = "#91231c"
+
+theme.fst_basic_color = "#202030"
+theme.snd_basic_color = '#235789'
+theme.trd_basic_color = '#F3C178'
+theme.fth_basic_color = '#2F3061'
+theme.lst_basic_color = '#C9DFCA'
+
 
 -- There are other variable sets
 -- overriding the default one when
@@ -103,7 +110,7 @@ theme.titlebar_maximized_button_focus_inactive  = themes_path.."default/titlebar
 theme.titlebar_maximized_button_normal_active = themes_path.."default/titlebar/maximized_normal_active.png"
 theme.titlebar_maximized_button_focus_active  = themes_path.."default/titlebar/maximized_focus_active.png"
 
-theme.wallpaper = "/home/dan/.config/awesome/background.png"
+theme.wallpaper = "/home/dan/.config/awesome/background.jpg"
 
 -- You can use your own layout icons like this:
 theme.layout_fairh = themes_path.."default/layouts/fairhw.png"
