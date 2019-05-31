@@ -154,25 +154,6 @@ mykeyboardlayout = awful.widget.keyboardlayout()
 mytextclock = wibox.widget.textclock()
 local battery_widget = require("battery-widget") {}
 
--- Create a wibox for each screen and add it
-local tasklist_buttons = gears.table.join(
-                     awful.button({ }, 1, function (c)
-                                              if c == client.focus then
-                                                  c.minimized = true
-                                              else
-                                                  c:emit_signal(
-                                                      "request::activate",
-                                                      "tasklist",
-                                                      {raise = true}
-                                                  )
-                                              end
-                                          end),
-                     awful.button({ }, 4, function ()
-                                              awful.client.focus.byidx(1)
-                                          end),
-                     awful.button({ }, 5, function ()
-                                              awful.client.focus.byidx(-1)
-                                          end))
 
 local function set_wallpaper(s)
     -- Wallpaper
@@ -205,7 +186,6 @@ awful.screen.connect_for_each_screen(function(s)
     s.mytaglist = awful.widget.taglist {
         screen  = s,
         filter  = awful.widget.taglist.filter.all,
-        -- update_function = taglist_update_fn
         layout = {
             layout = wibox.layout.fixed.vertical,
         },
@@ -219,7 +199,7 @@ awful.screen.connect_for_each_screen(function(s)
                     widget = wibox.container.place,
                 },
                 widget = wibox.container.margin,
-                margins = 5
+                margins = 5,
             },
             id     = 'background_role',
             widget = wibox.container.background,
@@ -230,7 +210,6 @@ awful.screen.connect_for_each_screen(function(s)
     s.mytasklist = awful.widget.tasklist {
         screen   = s,
         filter   = awful.widget.tasklist.filter.currenttags,
-        buttons  = tasklist_buttons,
         layout   = {
             spacing = 1,
             layout  = wibox.layout.fixed.vertical,
@@ -268,22 +247,25 @@ awful.screen.connect_for_each_screen(function(s)
         layout = wibox.layout.align.vertical,
         { -- Left widgets
             layout = wibox.layout.fixed.vertical,
+            wibox.layout.margin(s.mylayoutbox, 5, 5, 5, 5),
             -- mylauncher,
             s.mytaglist,
-            wibox.layout.margin(s.mylayoutbox, 0, 0, 5, 5),
             s.mypromptbox,
         },
         s.mytasklist, -- Middle widget
-        { -- Right widgets
-            layout = wibox.layout.fixed.vertical,
-            -- stray,
-            -- wibox.layout.margin(wibox.widget.systray(), 0, 0, 5, 5),
-            mykeyboardlayout,
-            volumecfg.widget,
-            battery_widget,
-            brightness_ctrl.widget,
-            mytextclock,
-        },
+        {
+            widget    = wibox.container.rotate,
+            direction = 'east',
+            {
+                layout = wibox.layout.fixed.horizontal,
+                -- stray,
+                -- wibox.layout.margin(wibox.widget.systray(), 0, 0, 5, 5),
+                mytextclock,
+                brightness_ctrl.widget,
+                battery_widget,
+                mykeyboardlayout,
+            }
+        }
     }
 end)
 -- }}}
