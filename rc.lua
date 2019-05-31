@@ -94,8 +94,8 @@ brightness_ctrl = brightness({
 
 -- Table of layouts to cover with awful.layout.inc, order matters.
 awful.layout.layouts = {
-    awful.layout.suit.floating,
     awful.layout.suit.tile,
+    awful.layout.suit.floating,
     -- awful.layout.suit.tile.left,
     -- awful.layout.suit.tile.bottom,
     -- awful.layout.suit.tile.top,
@@ -205,6 +205,25 @@ awful.screen.connect_for_each_screen(function(s)
     s.mytaglist = awful.widget.taglist {
         screen  = s,
         filter  = awful.widget.taglist.filter.all,
+        -- update_function = taglist_update_fn
+        layout = {
+            layout = wibox.layout.fixed.vertical,
+        },
+        widget_template = {
+            {
+                {
+                    {
+                        id     = 'text_role',
+                        widget = wibox.widget.textbox,
+                    },
+                    widget = wibox.container.place,
+                },
+                widget = wibox.container.margin,
+                margins = 5
+            },
+            id     = 'background_role',
+            widget = wibox.container.background,
+        }
     }
 
     -- Create a tasklist widget
@@ -213,20 +232,8 @@ awful.screen.connect_for_each_screen(function(s)
         filter   = awful.widget.tasklist.filter.currenttags,
         buttons  = tasklist_buttons,
         layout   = {
-            spacing_widget = {
-                {
-                    forced_width  = 5,
-                    forced_height = 25,
-                    thickness     = 1,
-                    color         = '#777777',
-                    widget        = wibox.widget.separator
-                },
-                valign = 'center',
-                halign = 'center',
-                widget = wibox.container.place,
-            },
             spacing = 1,
-            layout  = wibox.layout.fixed.horizontal
+            layout  = wibox.layout.fixed.vertical,
         },
         -- Notice that there is *NO* `wibox.wibox` prefix, it is a template,
         -- not a widget instance.
@@ -254,15 +261,13 @@ awful.screen.connect_for_each_screen(function(s)
     }
 
     -- Create the wibox
-    s.mywibox = awful.wibar({ position = "top", screen = s })
-
-    beautiful.systray_icon_spacing = 3
+    s.mywibox = awful.wibar({ position = "left", screen = s })
 
     -- Add widgets to the wibox
     s.mywibox:setup {
-        layout = wibox.layout.align.horizontal,
+        layout = wibox.layout.align.vertical,
         { -- Left widgets
-            layout = wibox.layout.fixed.horizontal,
+            layout = wibox.layout.fixed.vertical,
             -- mylauncher,
             s.mytaglist,
             wibox.layout.margin(s.mylayoutbox, 0, 0, 5, 5),
@@ -270,9 +275,9 @@ awful.screen.connect_for_each_screen(function(s)
         },
         s.mytasklist, -- Middle widget
         { -- Right widgets
-            layout = wibox.layout.fixed.horizontal,
+            layout = wibox.layout.fixed.vertical,
             -- stray,
-            wibox.layout.margin(wibox.widget.systray(), 0, 0, 5, 5),
+            -- wibox.layout.margin(wibox.widget.systray(), 0, 0, 5, 5),
             mykeyboardlayout,
             volumecfg.widget,
             battery_widget,
