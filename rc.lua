@@ -243,7 +243,8 @@ awful.screen.connect_for_each_screen(function(s)
                 -- stray,
                 -- wibox.layout.margin(wibox.widget.systray(), 0, 0, 5, 5),
                 mytextclock,
-                brightness({}).widget,
+                volumecfg,
+                -- brightness({}).widget,
                 battery_widget,
                 mykeyboardlayout,
             },
@@ -294,14 +295,6 @@ globalkeys = gears.table.join(
               {description = "focus the previous screen", group = "screen"}),
     awful.key({ modkey,           }, "u", awful.client.urgent.jumpto,
               {description = "jump to urgent client", group = "client"}),
-    awful.key({ modkey,           }, "Tab",
-        function ()
-            awful.client.focus.history.previous()
-            if client.focus then
-                client.focus:raise()
-            end
-        end,
-        {description = "go back", group = "client"}),
     -- Volume
     awful.key({}, "XF86AudioRaiseVolume", function() volumecfg:up() end),
     awful.key({}, "XF86AudioLowerVolume", function() volumecfg:down() end),
@@ -363,8 +356,10 @@ globalkeys = gears.table.join(
               {description = "restore minimized", group = "client"}),
 
     -- Prompt
-    awful.key({ modkey },            "r",     function () awful.screen.focused().mypromptbox:run() end,
-              {description = "run prompt", group = "launcher"}),
+    awful.key({ modkey },            "r",     function () awful.util.spawn_with_shell('rofi -show run') end,
+              {description = "rofi", group = "launcher"}),
+    awful.key({ modkey },            "Tab",     function () awful.util.spawn_with_shell('rofi -show window') end,
+              {description = "rofi", group = "launcher"}),
 
     awful.key({ modkey }, "x",
               function ()
